@@ -1,13 +1,13 @@
 .content {
-  background-color: bisque;
-  grid-area: c;
+    background-color: bisque;
+    grid-area: c;
 }
 
 .item {
-  color: cadetblue;
+    color: cadetblue;
 }
 
 .item img {
-  width: 50px;
-  border-radius: 25px;
+    width: 50px;
+    border-radius: 25px;
 }

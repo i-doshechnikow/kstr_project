@@ -13,7 +13,7 @@ const Apps = () => {
         <Header />
         <Nav />
         <div className="app-wrapper-content">
-          <Route path="/dialogs" component={Dialogs} />
+          <Route exact path="/dialogs" component={Dialogs} />
           <Route path="/profile" component={Profile} />
         </div>
       </div>

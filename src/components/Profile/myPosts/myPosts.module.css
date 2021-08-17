@@ -1,8 +1,13 @@
 .content {
   background-color: bisque;
   grid-area: c;
+  padding: 10px;
 }
 
 .item {
   color: cadetblue;
+}
+
+.posts {
+  padding: 10px;
 }

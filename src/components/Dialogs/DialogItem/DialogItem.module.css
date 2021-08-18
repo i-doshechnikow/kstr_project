@@ -1,0 +1,12 @@
+.dialogs {
+  padding: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: brown;
+}
+
+a:hover {
+    text-decoration: underline;
+}

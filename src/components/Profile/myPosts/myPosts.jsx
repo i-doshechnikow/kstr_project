@@ -2,7 +2,29 @@ import React from "react";
 import s from "./myPosts.module.css";
 import Post from "./Post/Post";
 
-const MyPosts = () => {
+const MyPosts = (props) => {
+  // let postsData = [
+  //   {
+  //     id: 1,
+  //     post: "info post 0",
+  //     likes: 8,
+  //   },
+  //   {
+  //     id: 2,
+  //     post: "info post 1",
+  //     likes: 10,
+  //   },
+  //   {
+  //     id: 3,
+  //     post: "info post 2",
+  //     likes: 88,
+  //   },
+  // ];
+
+  let posts = props.postsData.map((el) => {
+    return <Post message={el.post} likeCounter={el.likes} />;
+  });
+
   return (
     <div className={s.content}>
       <div>
@@ -16,10 +38,7 @@ const MyPosts = () => {
           </div>
         </div>
       </div>
-      <div className={s.posts}>
-        <Post message="first test post" likeCounter="2" />
-        <Post message="abrakadabra" likeCounter="15" />
-      </div>
+      <div className={s.posts}>{posts}</div>
     </div>
   );
 };

@@ -5,43 +5,19 @@ import Message from "./Message/Message";
 import s from "./Dialogs.module.css";
 
 const Dialogs = (props) => {
-  // let dialogsData = [
-  //   {
-  //     id: 1,
-  //     name: "iliya",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "ev",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "nik",
-  //   },
-  // ];
-
-  // let msgsData = [
-  //   {
-  //     id: 1,
-  //     msg: "hello",
-  //   },
-  //   {
-  //     id: 2,
-  //     msg: "privet",
-  //   },
-  //   {
-  //     id: 3,
-  //     msg: "bonjour",
-  //   },
-  // ];
-
-  let dialogsMap = props.data.map((el) => {
+  let dialogsMap = props.data.dialogsData.map((el) => {
     return <DialogItem name={el.name} id={el.id} />;
   });
 
-  let msgsMap = props.msgs.map((el) => {
+  let msgsMap = props.data.msgsData.map((el) => {
     return <Message msg={el.msg} />;
   });
+
+  let newMsgs = React.createRef();
+
+  let alertMsgs = () => {
+    alert(newMsgs.current.value);
+  }
 
   return (
     <div className={s.dialogs}>
@@ -53,6 +29,8 @@ const Dialogs = (props) => {
       </div>
       <div className={s.messages}>
         {msgsMap}
+        <textarea ref={newMsgs}></textarea>
+        <button onClick={alertMsgs}>send</button>
         {/* <Message msg={msgsData[0].msg} />
         <Message msg={msgsData[1].msg} />
         <Message msg={msgsData[2].msg} /> */}

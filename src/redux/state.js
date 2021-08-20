@@ -1,4 +1,6 @@
-import { rerender } from "../render";
+let rerender = () => {
+  console.log("state rerender");
+};
 
 let state = {
   profilePage: {
@@ -24,6 +26,7 @@ let state = {
         likes: 37,
       },
     ],
+    newPostText: "",
   },
   messagePage: {
     dialogsData: [
@@ -57,14 +60,24 @@ let state = {
   },
 };
 
-export let addPost = (postMessage) => {
+export const addPost = () => {
   let newPost = {
     id: 8,
-    post: postMessage,
+    post: state.profilePage.newPostText,
     likes: 546,
   };
   state.profilePage.postsData.push(newPost);
+  state.profilePage.newPostText = "";
   rerender(state);
+};
+
+export const addPostText = (text) => {
+  state.profilePage.newPostText = text;
+  rerender(state);
+};
+
+export const subscribe = (observer) => {
+  rerender = observer;
 };
 
 export default state;

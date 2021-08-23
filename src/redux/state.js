@@ -61,6 +61,10 @@ let store = {
     console.log("test");
   },
 
+  subscribe(observer) {
+    this.rerender = observer;
+  },
+
   getState() {
     return this._state;
   },
@@ -72,7 +76,7 @@ let store = {
       likes: 546,
     };
     this._state.profilePage.postsData.push(newPost);
-    this._state.profilePage.newPostText = '';
+    this._state.profilePage.newPostText = "";
     this.rerender(this._state);
   },
 
@@ -81,8 +85,12 @@ let store = {
     this.rerender(this._state);
   },
 
-  subscribe(observer) {
-    this.rerender = observer;
+  dispatch(action) {
+    if (action.type === "ADD-POST") {
+      this.addPost();
+    } else if (action.type === "UPDATE-NEW-POST-TEXT") {
+      this.addPostText(action.msg);
+    }
   },
 };
 

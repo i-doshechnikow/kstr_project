@@ -14,8 +14,7 @@ let rerender = (state) => {
       <React.StrictMode>
         <Apps
           state={state}
-          addPost={store.addPost.bind(store)}
-          addPostText={store.addPostText.bind(store)}
+          dispatch={store.dispatch.bind(store)}
         />
       </React.StrictMode>
     </BrowserRouter>,

@@ -24,6 +24,7 @@ const Apps = (props) => {
           render={() => (
             <Profile
               data={props.state.profilePage}
+              // data={props.state._state.profilePage}
               addPost={props.addPost}
               addPostText={props.addPostText}
             />

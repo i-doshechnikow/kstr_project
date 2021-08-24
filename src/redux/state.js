@@ -1,3 +1,8 @@
+const ADD_POST = "ADD-POST";
+const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
+const UPDATE_NEW_MSG_TEXT = "UPDATE-NEW-MSG-TEXT";
+const ADD_MSG = "ADD-MSG";
+
 let store = {
   _state: {
     profilePage: {
@@ -54,6 +59,7 @@ let store = {
           msg: "bonjour",
         },
       ],
+      newMessageBody: "",
     },
   },
 
@@ -80,19 +86,51 @@ let store = {
     this.rerender(this._state);
   },
 
+  addMsg() {
+    let newMsg = {
+      id: 1,
+      msg: this._state.messagePage.newMessageBody,
+    };
+    this._state.messagePage.msgsData.push(newMsg);
+    this._state.messagePage.newMessageBody = "";
+    this.rerender(this._state);
+  },
+
   addPostText(text) {
     this._state.profilePage.newPostText = text;
     this.rerender(this._state);
   },
 
+  addMsgText(text) {
+    this._state.messagePage.newMessageBody = text;
+    this.rerender(this._state);
+  },
+
   dispatch(action) {
-    if (action.type === "ADD-POST") {
+    if (action.type === ADD_POST) {
       this.addPost();
-    } else if (action.type === "UPDATE-NEW-POST-TEXT") {
+    } else if (action.type === UPDATE_NEW_POST_TEXT) {
       this.addPostText(action.msg);
+    } else if (action.type === UPDATE_NEW_MSG_TEXT) {
+      this.addMsgText(action.msg);
+    } else if (action.type === ADD_MSG) {
+      this.addMsg();
     }
   },
 };
+
+export const addPostActionCreator = () => ({ type: ADD_POST });
+export const addMsgActionCreator = () => ({ type: ADD_MSG });
+
+export const updateNewPostText = (text) => ({
+  type: UPDATE_NEW_POST_TEXT,
+  msg: text,
+});
+
+export const updateNewMsgText = (text) => ({
+  type: UPDATE_NEW_MSG_TEXT,
+  msg: text,
+});
 
 export default store;
 window.store = store;

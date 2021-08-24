@@ -17,7 +17,7 @@ const Apps = (props) => {
 
         <Route
           path="/dialogs"
-          render={() => <Dialogs data={props.state.messagePage} />}
+          render={() => <Dialogs data={props.state.messagePage} dispatch={props.dispatch}/>}
         />
         <Route
           path="/profile"

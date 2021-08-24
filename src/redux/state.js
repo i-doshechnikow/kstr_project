@@ -1,7 +1,6 @@
-const ADD_POST = "ADD-POST";
-const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
-const UPDATE_NEW_MSG_TEXT = "UPDATE-NEW-MSG-TEXT";
-const ADD_MSG = "ADD-MSG";
+import messageReducer from "./message-reducer";
+import profilereducer from "./profile-reducer";
+import sidebarReducer from "./sidebar-reducer";
 
 let store = {
   _state: {
@@ -61,6 +60,7 @@ let store = {
       ],
       newMessageBody: "",
     },
+    sidebar: {},
   },
 
   rerender() {
@@ -107,30 +107,12 @@ let store = {
   },
 
   dispatch(action) {
-    if (action.type === ADD_POST) {
-      this.addPost();
-    } else if (action.type === UPDATE_NEW_POST_TEXT) {
-      this.addPostText(action.msg);
-    } else if (action.type === UPDATE_NEW_MSG_TEXT) {
-      this.addMsgText(action.msg);
-    } else if (action.type === ADD_MSG) {
-      this.addMsg();
-    }
+    this._state.profilePage = profilereducer(this._state.profilePage, action);
+    this._state.messagePage = messageReducer(this._state.messagePage, action);
+    this._state.sidebar = sidebarReducer(this._state.sidebar, action);
+    this.rerender(this._state);
   },
 };
-
-export const addPostActionCreator = () => ({ type: ADD_POST });
-export const addMsgActionCreator = () => ({ type: ADD_MSG });
-
-export const updateNewPostText = (text) => ({
-  type: UPDATE_NEW_POST_TEXT,
-  msg: text,
-});
-
-export const updateNewMsgText = (text) => ({
-  type: UPDATE_NEW_MSG_TEXT,
-  msg: text,
-});
 
 export default store;
 window.store = store;

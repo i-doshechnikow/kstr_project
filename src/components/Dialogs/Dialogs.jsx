@@ -16,11 +16,12 @@ const Dialogs = (props) => {
 
   let onMsgAreaChange = (e) => {
     let text = e.target.value;
-    props.dispatch(updateNewMsgText(text));
+    props.onMsgAreaChange(text);
   };
 
   let addMsg = () => {
-    props.dispatch(addMsgActionCreator());
+    // props.dispatch(addMsgActionCreator());
+    props.addMsg();
   };
 
   return (

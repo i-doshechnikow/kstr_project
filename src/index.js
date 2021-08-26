@@ -7,12 +7,15 @@ import Apps from "./App";
 // import { addPost, addPostText } from "./redux/state";
 import { BrowserRouter } from "react-router-dom";
 import store from "./redux/redux-store";
+import StoreСontext, { Provider } from "./storeСontext";
 
 let rerender = (state) => {
   ReactDOM.render(
     <BrowserRouter>
       <React.StrictMode>
-        <Apps state={state} dispatch={store.dispatch.bind(store)} store={store}/>
+        <Provider store={store}>
+          <Apps />
+        </Provider>
       </React.StrictMode>
     </BrowserRouter>,
     document.getElementById("root")

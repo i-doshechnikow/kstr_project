@@ -8,24 +8,31 @@ import {
   updateNewMsgText,
 } from "../../redux/message-reducer";
 import Dialogs from "./Dialogs";
+import StoreСontext from "../../storeСontext";
 
 const DialogsContainer = (props) => {
-  let state = props.store.getState();
-
-  let addMsg = () => {
-    props.store.dispatch(addMsgActionCreator());
-  };
-
-  let onMsgAreaChange = (text) => {
-    props.store.dispatch(updateNewMsgText(text));
-  };
-
   return (
-    <Dialogs
-      data={state.messagePage}
-      addMsg={addMsg}
-      onMsgAreaChange={onMsgAreaChange}
-    />
+    <StoreСontext.Consumer>
+      {(store) => {
+        let state = store.getState();
+
+        let addMsg = () => {
+          store.dispatch(addMsgActionCreator());
+        };
+
+        let onMsgAreaChange = (text) => {
+          store.dispatch(updateNewMsgText(text));
+        };
+
+        return (
+          <Dialogs
+            data={state.messagePage}
+            addMsg={addMsg}
+            onMsgAreaChange={onMsgAreaChange}
+          />
+        );
+      }}
+    </StoreСontext.Consumer>
   );
 };
 

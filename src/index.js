@@ -7,7 +7,7 @@ import Apps from "./App";
 // import { addPost, addPostText } from "./redux/state";
 import { BrowserRouter } from "react-router-dom";
 import store from "./redux/redux-store";
-import StoreСontext, { Provider } from "./storeСontext";
+import { Provider } from "react-redux";
 
 let rerender = (state) => {
   ReactDOM.render(

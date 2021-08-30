@@ -3,15 +3,18 @@ import { NavLink } from "react-router-dom";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import s from "./Dialogs.module.css";
-import { addMsgActionCreator, updateNewMsgText } from "../../redux/message-reducer";
+import {
+  addMsgActionCreator,
+  updateNewMsgText,
+} from "../../redux/message-reducer";
 
 const Dialogs = (props) => {
   let dialogsMap = props.data.dialogsData.map((el) => {
-    return <DialogItem name={el.name} id={el.id} />;
+    return <DialogItem name={el.name} id={el.id} key={el.id} />;
   });
 
   let msgsMap = props.data.msgsData.map((el) => {
-    return <Message msg={el.msg} />;
+    return <Message msg={el.msg} key={el.id} />;
   });
 
   let onMsgAreaChange = (e) => {

@@ -12,11 +12,9 @@ import { Provider } from "react-redux";
 // let rerender = (state) => {
 ReactDOM.render(
   <BrowserRouter>
-    <React.StrictMode>
-      <Provider store={store}>
-        <Apps />
-      </Provider>
-    </React.StrictMode>
+    <Provider store={store}>
+      <Apps />
+    </Provider>
   </BrowserRouter>,
   document.getElementById("root")
 );

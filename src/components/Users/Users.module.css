@@ -4,6 +4,10 @@
   border-radius: 100%;
 }
 
+.selectedPage{
+  font-weight: bold;
+}
+
 .button {
   align-items: center;
   appearance: none;

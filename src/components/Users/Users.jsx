@@ -66,26 +66,13 @@ let Users = (props) => {
                 <button
                   className={styles.button}
                   onClick={() => {
-                    axios
-                      .post(
-                        `https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
-                        {},
-                        {
-                          withCredentials: true,
-                          headers: {
-                            "API-KEY": "234cc3be-73fc-42c6-9994-80baa9a4fe68",
-                          },
-                        }
-                      )
-                      .then((ans) => {
-                        if (
-                          ans.data.messages[0] !== `You can't follow yourself`
-                        ) {
-                          props.follow(u.id);
-                        }
-                      });
-                    // props.onFollow(u.id);
-                    // props.follow(u.id);
+                    props.onFollow(u.id);
+                    props.follow(u.id);
+                    // .then((ans) => {
+                    //   if (ans.messages[0] !== `You can't follow yourself`) {
+                    //     props.follow(u.id);
+                    //   }
+                    // });
                   }}
                 >
                   follow

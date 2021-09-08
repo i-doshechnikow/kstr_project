@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Users.module.css";
 import face from "../../assets/images/face.png";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 
 let Users = (props) => {
   let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -35,7 +36,7 @@ let Users = (props) => {
         <div key={u.id}>
           <span>
             <div>
-              <NavLink to={'/profile/' + u.id}>
+              <NavLink to={"/profile/" + u.id}>
                 <img
                   src={u.photos.small != null ? u.photos.small : face}
                   className={styles.photo}
@@ -47,19 +48,47 @@ let Users = (props) => {
                 <button
                   className={styles.button}
                   onClick={() => {
+                    axios.delete(
+                      `https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
+                      {
+                        withCredentials: true,
+                        headers: {
+                          "API-KEY": "234cc3be-73fc-42c6-9994-80baa9a4fe68",
+                        },
+                      }
+                    );
                     props.unfollow(u.id);
                   }}
                 >
-                  unfollowed
+                  unfollow
                 </button>
               ) : (
                 <button
                   className={styles.button}
                   onClick={() => {
-                    props.follow(u.id);
+                    axios
+                      .post(
+                        `https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
+                        {},
+                        {
+                          withCredentials: true,
+                          headers: {
+                            "API-KEY": "234cc3be-73fc-42c6-9994-80baa9a4fe68",
+                          },
+                        }
+                      )
+                      .then((ans) => {
+                        if (
+                          ans.data.messages[0] !== `You can't follow yourself`
+                        ) {
+                          props.follow(u.id);
+                        }
+                      });
+                    // props.onFollow(u.id);
+                    // props.follow(u.id);
                   }}
                 >
-                  followed
+                  follow
                 </button>
               )}
             </div>

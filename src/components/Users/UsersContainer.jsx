@@ -6,6 +6,7 @@ import {
   setCurrentPage,
   setTotalUsers,
   setToggelFetching,
+  setToggelFollowingProgress,
 } from "../../redux/users-reducer";
 import { connect } from "react-redux";
 import Users from "./Users";
@@ -40,7 +41,14 @@ class UsersContainer extends React.Component {
   };
 
   onFollow = (userId) => {
-    userApi.onFollowClick(userId);
+    // userApi.onFollowClick(userId);
+    this.props.setToggelFollowingProgress(true, userId);
+    userApi.onFollowClick(userId).then((answer) => {
+      if (answer.messages[0] !== "You can't follow yourself") {
+        this.props.follow(userId);
+      }
+      this.props.setToggelFollowingProgress(false, userId);
+    });
   };
 
   render() {
@@ -53,9 +61,11 @@ class UsersContainer extends React.Component {
           currentPage={this.props.currentPage}
           users={this.props.users}
           unfollow={this.props.unfollow}
-          follow={this.props.follow}
+          // follow={this.props.follow}
           onPageChanged={this.onPageChanged}
           onFollow={this.onFollow}
+          setToggelFollowingProgress={this.props.setToggelFollowingProgress}
+          followingInProgress={this.props.followingInProgress}
         />
       </>
     );
@@ -69,6 +79,7 @@ let mapStateToProps = (state) => {
     totalUsersCount: state.usersPage.totalUsersCount,
     currentPage: state.usersPage.currentPage,
     isFetching: state.usersPage.isFetching,
+    followingInProgress: state.usersPage.followingInProgress,
   };
 };
 
@@ -102,4 +113,5 @@ export default connect(mapStateToProps, {
   setCurrentPage,
   setTotalUsers,
   setToggelFetching,
+  setToggelFollowingProgress,
 })(UsersContainer);

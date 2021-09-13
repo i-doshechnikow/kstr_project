@@ -9,12 +9,22 @@ const instance = axios.create({
 });
 
 export const userApi = {
+  getIsAuth() {
+    return instance.get(`auth/me`).then((response) => {
+      return response.data;
+    });
+  },
   getUsers(pageNumber = 1, pageSize = 5) {
     return instance
       .get(`users?page=${pageNumber}&count=${pageSize}`)
       .then((response) => {
         return response.data;
       });
+  },
+  getUserInfo(id) {
+    return instance.get(`profile/${id}`).then((response) => {
+      return response.data;
+    });
   },
   onFollowClick(id) {
     return instance.post(`follow/${id}`).then((response) => {

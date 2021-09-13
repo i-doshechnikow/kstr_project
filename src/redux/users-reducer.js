@@ -91,4 +91,24 @@ export const getUsers = (currentPage, pageSize) => {
   };
 };
 
+export const getFollow = (id) => {
+  return (dispatch) => {
+    dispatch(setToggelFollowingProgress(true, id));
+    userApi.onFollowClick(id).then((answer) => {
+      if (answer.messages[0] !== "You can't follow yourself") {
+        dispatch(follow(id));
+      }
+      dispatch(setToggelFollowingProgress(false, id));
+    });
+  };
+};
+
+export const onUnFollow = (id) => (dispatch) => {
+  dispatch(setToggelFollowingProgress(true, id));
+  userApi.onUnfollowClick(id).then((ans) => {
+    if (ans.resultCode == 0) dispatch(unfollow(id));
+    dispatch(setToggelFollowingProgress(false, id));
+  });
+};
+
 export default usersReducer;

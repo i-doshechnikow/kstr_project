@@ -4,18 +4,16 @@ import {
   unfollow,
   setToggelFollowingProgress,
   getUsers,
+  getFollow,
+  onUnFollow,
 } from "../../redux/users-reducer";
 import { connect } from "react-redux";
 import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
-import { userApi } from "../../api/api";
 
 class UsersContainer extends React.Component {
   componentDidMount() {
-    this.props.getUsers(
-      this.props.currentPage,
-      this.props.pageSize
-    );
+    this.props.getUsers(this.props.currentPage, this.props.pageSize);
   }
 
   onPageChanged = (pageNumber) => {
@@ -23,13 +21,11 @@ class UsersContainer extends React.Component {
   };
 
   onFollow = (userId) => {
-    this.props.setToggelFollowingProgress(true, userId);
-    userApi.onFollowClick(userId).then((answer) => {
-      if (answer.messages[0] !== "You can't follow yourself") {
-        this.props.follow(userId);
-      }
-      this.props.setToggelFollowingProgress(false, userId);
-    });
+    this.props.getFollow(userId);
+  };
+
+  onUnFollow = (userId) => {
+    this.props.onUnFollow(userId);
   };
 
   render() {
@@ -41,10 +37,9 @@ class UsersContainer extends React.Component {
           pageSize={this.props.pageSize}
           currentPage={this.props.currentPage}
           users={this.props.users}
-          unfollow={this.props.unfollow}
           onPageChanged={this.onPageChanged}
           onFollow={this.onFollow}
-          setToggelFollowingProgress={this.props.setToggelFollowingProgress}
+          onUnFollow={this.onUnFollow}
           followingInProgress={this.props.followingInProgress}
         />
       </>
@@ -68,4 +63,6 @@ export default connect(mapStateToProps, {
   unfollow,
   setToggelFollowingProgress,
   getUsers,
+  getFollow,
+  onUnFollow,
 })(UsersContainer);

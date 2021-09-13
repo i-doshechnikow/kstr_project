@@ -46,33 +46,16 @@ let Users = (props) => {
             <div>
               {u.followed === true ? (
                 <button
-                  //user id == buton[userid]
-                  // disabled={props.followingInProgress[0]}
                   disabled={props.followingInProgress.some((el) => el == u.id)}
                   className={styles.button}
                   onClick={() => {
-                    props.setToggelFollowingProgress(true, u.id);
-                    axios
-                      .delete(
-                        `https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
-                        {
-                          withCredentials: true,
-                          headers: {
-                            "API-KEY": "234cc3be-73fc-42c6-9994-80baa9a4fe68",
-                          },
-                        }
-                      )
-                      .then((ans) => {
-                        if (ans.data.resultCode == 0) props.unfollow(u.id);
-                        props.setToggelFollowingProgress(false, u.id);
-                      });
+                    props.onUnFollow(u.id);
                   }}
                 >
                   unfollow
                 </button>
               ) : (
                 <button
-                  // disabled={props.followingInProgress[0]}
                   disabled={props.followingInProgress.some((el) => el == u.id)}
                   className={styles.button}
                   onClick={() => {

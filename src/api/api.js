@@ -21,4 +21,9 @@ export const userApi = {
       return response.data;
     });
   },
+  onUnfollowClick(id) {
+    return instance.delete(`follow/${id}`).then((response) => {
+      return response.data;
+    });
+  },
 };

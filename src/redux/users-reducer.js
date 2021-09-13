@@ -1,3 +1,5 @@
+import { userApi } from "../api/api";
+
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET_USERS";
@@ -72,5 +74,21 @@ export const setToggelFollowingProgress = (isFolowing, userId) => ({
   isFolowing,
   userId,
 });
+
+export const getUsers = (currentPage, pageSize) => {
+  return (dispatch) => {
+    dispatch(setCurrentPage(currentPage));
+    dispatch(setToggelFetching(true));
+    userApi.getUsers(currentPage, pageSize).then((ans) => {
+      dispatch(setToggelFetching(false));
+      dispatch(setUsers(ans.items));
+      if (ans.totalCount < 100) {
+        dispatch(setTotalUsers(ans.totalCount));
+      } else {
+        dispatch(setTotalUsers(50));
+      }
+    });
+  };
+};
 
 export default usersReducer;

@@ -1,47 +1,28 @@
 import React from "react";
 import {
   follow,
-  setUsers,
   unfollow,
-  setCurrentPage,
-  setTotalUsers,
-  setToggelFetching,
   setToggelFollowingProgress,
+  getUsers,
 } from "../../redux/users-reducer";
 import { connect } from "react-redux";
 import Users from "./Users";
-import axios from "axios";
-import preloader from "../../assets/images/1476.gif";
 import Preloader from "../common/Preloader/Preloader";
 import { userApi } from "../../api/api";
 
 class UsersContainer extends React.Component {
   componentDidMount() {
-    this.props.setToggelFetching(true);
-    userApi
-      .getUsers(this.props.currentPage, this.props.pageSize)
-      .then((ans) => {
-        this.props.setToggelFetching(false);
-        this.props.setUsers(ans.items);
-        if (ans.totalCount < 100) {
-          this.props.setTotalUsers(ans.totalCount);
-        } else {
-          this.props.setTotalUsers(50);
-        }
-      });
+    this.props.getUsers(
+      this.props.currentPage,
+      this.props.pageSize
+    );
   }
 
   onPageChanged = (pageNumber) => {
-    this.props.setCurrentPage(pageNumber);
-    this.props.setToggelFetching(true);
-    userApi.getUsers(pageNumber, this.props.pageSize).then((ans) => {
-      this.props.setToggelFetching(false);
-      this.props.setUsers(ans.items);
-    });
+    this.props.getUsers(pageNumber, this.props.pageSize);
   };
 
   onFollow = (userId) => {
-    // userApi.onFollowClick(userId);
     this.props.setToggelFollowingProgress(true, userId);
     userApi.onFollowClick(userId).then((answer) => {
       if (answer.messages[0] !== "You can't follow yourself") {
@@ -61,7 +42,6 @@ class UsersContainer extends React.Component {
           currentPage={this.props.currentPage}
           users={this.props.users}
           unfollow={this.props.unfollow}
-          // follow={this.props.follow}
           onPageChanged={this.onPageChanged}
           onFollow={this.onFollow}
           setToggelFollowingProgress={this.props.setToggelFollowingProgress}
@@ -83,35 +63,9 @@ let mapStateToProps = (state) => {
   };
 };
 
-// let mapDispatchToProps = (dispatch) => {
-//   return {
-//     follow: (userId) => {
-//       dispatch(followAC(userId));
-//     },
-//     unfollow: (userId) => {
-//       dispatch(unfollowAC(userId));
-//     },
-//     setUsers: (users) => {
-//       dispatch(setUsersAC(users));
-//     },
-//     setCurrentPage: (page) => {
-//       dispatch(setCurrentPageAC(page));
-//     },
-//     setTotalUserCount: (total) => {
-//       dispatch(setTotalUsersAC(total));
-//     },
-//     setToggelFetching: (isFetch) => {
-//       dispatch(setToggelFetchingAC(isFetch));
-//     },
-//   };
-// };
-
 export default connect(mapStateToProps, {
   follow,
   unfollow,
-  setUsers,
-  setCurrentPage,
-  setTotalUsers,
-  setToggelFetching,
   setToggelFollowingProgress,
+  getUsers,
 })(UsersContainer);

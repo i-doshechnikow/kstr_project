@@ -22,9 +22,8 @@ export const userApi = {
       });
   },
   getUserInfo(id) {
-    return instance.get(`profile/${id}`).then((response) => {
-      return response.data;
-    });
+    console.warn("Obsolete method. Use profileApi object");
+    return profileApi.getUserInfo(id);
   },
   onFollowClick(id) {
     return instance.post(`follow/${id}`).then((response) => {
@@ -34,6 +33,24 @@ export const userApi = {
   onUnfollowClick(id) {
     return instance.delete(`follow/${id}`).then((response) => {
       return response.data;
+    });
+  },
+};
+
+export const profileApi = {
+  getUserInfo(id) {
+    return instance.get(`profile/${id}`).then((response) => {
+      return response.data;
+    });
+  },
+  getStatus(id) {
+    return instance
+      .get(`profile/status/${id}`)
+      .then((response) => response.data);
+  },
+  updateStatus(string) {
+    return instance.put(`profile/status`, {
+      status: string,
     });
   },
 };

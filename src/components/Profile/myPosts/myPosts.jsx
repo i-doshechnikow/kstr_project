@@ -1,4 +1,5 @@
 import React from "react";
+import { Field, reduxForm } from "redux-form";
 import s from "./myPosts.module.css";
 import Post from "./Post/Post";
 
@@ -7,17 +8,9 @@ const MyPosts = (props) => {
     return <Post message={el.post} likeCounter={el.likes} key={el.id} />;
   });
 
-  let newPostEl = React.createRef();
-
-  let onAddPosts = () => {
-    // props.dispatch(addPostActionCreator());
-    props.addPost();
-  };
-
-  let onPostChange = () => {
-    let text = newPostEl.current.value;
-    // props.dispatch(updateNewPostText(text));
-    props.updateNewPostText(text);
+  let onClickAddPost = (values) => {
+    props.addPost(values.newPost);
+    values.newPost = "";
   };
 
   return (
@@ -25,22 +18,45 @@ const MyPosts = (props) => {
       <div>
         my post
         <div>
-          <div>
-            <textarea
-              onChange={onPostChange}
-              ref={newPostEl}
-              // value={props.newPostText}
-              value={props.textAr}
-            />
-          </div>
-          <div>
-            <button onClick={onAddPosts}>Add post</button>
-          </div>
+          {/* <NewPostTest add={props.addPost} /> */}
+          <PostReduxForm onSubmit={onClickAddPost} />
         </div>
       </div>
       <div className={s.posts}>{posts}</div>
     </div>
   );
 };
+
+const newAddPostForm = (props) => {
+  return (
+    <form onSubmit={props.handleSubmit}>
+      <div>
+        <Field
+          type={"text"}
+          name={"newPost"}
+          component={"textarea"}
+          placeholder={"enter post"}
+        />
+      </div>
+      <div>
+        <button>Add post</button>
+      </div>
+    </form>
+  );
+};
+
+const PostReduxForm = reduxForm({ form: "newPost" })(newAddPostForm);
+
+// const NewPostTest = (props) => {
+//   const onSubmit = (formData) => {
+//     props.add(formData.newPost);
+//     formData.newPost = "";
+//   };
+//   return (
+//     <div>
+//       <PostReduxForm onSubmit={onSubmit} />
+//     </div>
+//   );
+// };
 
 export default MyPosts;

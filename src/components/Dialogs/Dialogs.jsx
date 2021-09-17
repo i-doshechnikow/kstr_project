@@ -7,6 +7,7 @@ import {
   addMsgActionCreator,
   updateNewMsgText,
 } from "../../redux/message-reducer";
+import MessageNewTest from "./Message/MessageForm";
 
 const Dialogs = (props) => {
   let dialogsMap = props.data.dialogsData.map((el) => {
@@ -18,6 +19,7 @@ const Dialogs = (props) => {
   });
 
   let onMsgAreaChange = (e) => {
+    // console.log(props);
     let text = e.target.value;
     props.onMsgAreaChange(text);
   };
@@ -38,7 +40,7 @@ const Dialogs = (props) => {
       <div className={s.messages}>
         {msgsMap}
         <textarea
-          placeholder="enter message"
+          placeholder={"enter message"}
           onChange={onMsgAreaChange}
           value={props.data.newMessageBody}
         ></textarea>
@@ -49,6 +51,9 @@ const Dialogs = (props) => {
         {/* <Message msg={msgsData[0].msg} />
         <Message msg={msgsData[1].msg} />
         <Message msg={msgsData[2].msg} /> */}
+      </div>
+      <div>
+        <MessageNewTest addNewMessage={props.newAdd} />
       </div>
     </div>
   );

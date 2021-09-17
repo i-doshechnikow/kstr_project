@@ -1,6 +1,7 @@
 import React from "react";
 import {
   addMsgActionCreator,
+  newAdd,
   updateNewMsgText,
 } from "../../redux/message-reducer";
 import Dialogs from "./Dialogs";
@@ -22,6 +23,9 @@ let mapDispatchToProps = (dispatch) => {
     },
     onMsgAreaChange: (text) => {
       dispatch(updateNewMsgText(text));
+    },
+    newAdd: (text) => {
+      dispatch(newAdd(text));
     },
   };
 };

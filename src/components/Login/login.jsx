@@ -1,6 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import s from "./login.module.css";
+import { authorized } from "../../redux/auth-reducer";
 
 const LoginForm = (props) => {
   return (
@@ -29,7 +30,7 @@ const LoginReduxForm = reduxForm({
 
 const Login = (props) => {
   const onSubmit = (formData) => {
-    console.log(formData);
+    props.authorized(formData);
   };
   return (
     <div className={s.main}>

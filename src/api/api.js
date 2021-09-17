@@ -54,3 +54,15 @@ export const profileApi = {
     });
   },
 };
+
+export const testAuthApi = {
+  authTest(login, password, rememberMe) {
+    return instance
+      .post(`auth/login`, {
+        email: login,
+        password: password,
+        rememberMe: rememberMe,
+      })
+      .then((res) => res.data.resultCode);
+  },
+};

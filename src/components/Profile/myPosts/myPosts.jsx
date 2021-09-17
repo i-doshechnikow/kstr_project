@@ -8,9 +8,9 @@ const MyPosts = (props) => {
     return <Post message={el.post} likeCounter={el.likes} key={el.id} />;
   });
 
-  let onClickAddPost = (values) => {
-    props.addPost(values.newPost);
-    values.newPost = "";
+  let onClickAddPost = (formData) => {
+    props.addPost(formData.newPost);
+    formData.newPost = "";
   };
 
   return (

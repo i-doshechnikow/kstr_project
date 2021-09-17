@@ -9,6 +9,7 @@ import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/login";
 import LoginContainer from "./components/Login/loginContainer";
+import SignupForm from "./components/componetForTest/Formik";
 
 const Apps = (props) => {
   return (
@@ -20,6 +21,7 @@ const Apps = (props) => {
         <Route path="/profile/:userId?" render={() => <ProfileContainer />} />
         <Route path="/users" render={() => <UsersContainer />} />
         <Route path="/login" render={() => <LoginContainer />} />
+        <Route path="/test" render={() => <SignupForm />} />
       </div>
     </div>
   );

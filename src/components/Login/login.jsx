@@ -2,16 +2,35 @@ import React from "react";
 import { Field, reduxForm } from "redux-form";
 import s from "./login.module.css";
 import { authorized } from "../../redux/auth-reducer";
+import { Input } from "../common/FormsControls/FormsControls";
+import {
+  maxLengthCreator,
+  requiredField,
+} from "../../utils/validators/validators";
+
+const maxLenth10 = maxLengthCreator(10);
 
 const LoginForm = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
       <div className={s.formControll}>
-        <Field type="text" name={"login"} required component={"input"} />
+        <Field
+          type="text"
+          name={"login"}
+          required
+          component={Input}
+          validate={[requiredField, maxLenth10]}
+        />
         <label>Email</label>
       </div>
       <div className={s.formControll}>
-        <Field type="password" name={"password"} required component={"input"} />
+        <Field
+          type="password"
+          name={"password"}
+          required
+          component={Input}
+          validate={[requiredField, maxLenth10]}
+        />
         <label>Password</label>
       </div>
       <button className={s.btn}>Login</button>

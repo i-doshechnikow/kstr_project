@@ -64,7 +64,7 @@ let store = {
   },
 
   rerender() {
-    console.log("test");
+    // console.log("test");
   },
 
   subscribe(observer) {

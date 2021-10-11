@@ -8,7 +8,7 @@ const SignupForm = () => {
       email: "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
     },
   });
   return (

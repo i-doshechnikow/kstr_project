@@ -8,7 +8,7 @@ import {
   requiredField,
 } from "../../utils/validators/validators";
 
-const maxLenth10 = maxLengthCreator(10);
+const maxLenth30 = maxLengthCreator(30);
 
 const LoginForm = (props) => {
   return (
@@ -19,7 +19,7 @@ const LoginForm = (props) => {
           name={"login"}
           required
           component={Input}
-          validate={[requiredField, maxLenth10]}
+          validate={[requiredField, maxLenth30]}
         />
         <label>Email</label>
       </div>
@@ -29,7 +29,7 @@ const LoginForm = (props) => {
           name={"password"}
           required
           component={Input}
-          validate={[requiredField, maxLenth10]}
+          validate={[requiredField, maxLenth30]}
         />
         <label>Password</label>
       </div>

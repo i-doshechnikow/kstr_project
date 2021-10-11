@@ -16,7 +16,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.userData,
-        isAuth: true,
+        isAuth: action.isAuth,
       };
     case SET_AUTH:
       return {
@@ -33,9 +33,10 @@ export const setAuth = (answer) => ({
   isAuth: answer,
 });
 
-export const setUserData = (userId, email, login) => ({
+export const setUserData = (userId, email, login, isAuth) => ({
   type: SET_USER_DATA,
   userData: { userId, email, login },
+  isAuth: isAuth,
 });
 
 export const authorized = (formData) => (dispatch) => {
@@ -48,11 +49,20 @@ export const authorized = (formData) => (dispatch) => {
     });
 };
 
+export const logoutFromAcc = () => (dispatch) => {
+  testAuthApi.logout().then((ans) => {
+    if (ans.resultCode === 0) {
+      dispatch(setAuth(false));
+      dispatch(setUserData(null, null, null, false));
+    }
+  });
+};
+
 export const getAuth = () => (dispatch) => {
   userApi.getIsAuth().then((ans) => {
     if (ans.resultCode === 0) {
       let { id, email, login } = ans.data;
-      dispatch(setUserData(id, email, login));
+      dispatch(setUserData(id, email, login, true));
     }
   });
 };

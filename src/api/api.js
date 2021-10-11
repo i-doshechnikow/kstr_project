@@ -65,4 +65,7 @@ export const testAuthApi = {
       })
       .then((res) => res.data.resultCode);
   },
+  logout() {
+    return instance.delete(`auth/login`).then((res) => res.data);
+  },
 };

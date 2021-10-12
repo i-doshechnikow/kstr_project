@@ -17,6 +17,8 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
 class ProfileContainer extends React.Component {
   componentDidMount() {
+      // this.props.getProfile(this.props.authorizedUserId);
+
     this.props.getProfile(this.props.match.params.userId);
     this.props.getUserStatus(this.props.match.params.userId);
   }
@@ -41,10 +43,11 @@ class ProfileContainer extends React.Component {
 //   }
 //   return <ProfileContainer {...props} />;
 // };
-
 let mapStateToProps = (state) => ({
   userProfileId: state.profilePage.userProfileId,
   status: state.profilePage.status,
+  authorizedUserId: state.auth.userId,
+  isAuth: state.auth.isAuth,
 });
 
 export default compose(

@@ -69,7 +69,7 @@ export default compose(
     getFollow,
     onUnFollow,
   }),
-  withAuthRedirect
+  // withAuthRedirect
 )(UsersContainer);
 
 // let AuthRedirectComponent = withAuthRedirect(UsersContainer);

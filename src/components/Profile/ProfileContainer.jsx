@@ -17,10 +17,19 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
 class ProfileContainer extends React.Component {
   componentDidMount() {
-      // this.props.getProfile(this.props.authorizedUserId);
+    // this.props.getProfile(this.props.authorizedUserId);
+    let userId = this.props.match.params.userId;
+    if (!userId) {
+      userId = this.props.authorizedUserId;
+      if (!userId) {
+        this.props.history.push("/login");
+      }
+    }
 
-    this.props.getProfile(this.props.match.params.userId);
-    this.props.getUserStatus(this.props.match.params.userId);
+    // this.props.getProfile(this.props.match.params.userId);
+    // this.props.getUserStatus(this.props.match.params.userId);
+    this.props.getProfile(userId);
+    this.props.getUserStatus(userId);
   }
 
   render() {
@@ -57,8 +66,8 @@ export default compose(
     getUserStatus,
     updateUserStatus,
   }),
-  withRouter,
-  withAuthRedirect
+  withRouter
+  // withAuthRedirect
 )(ProfileContainer);
 
 // let AuthRedirectComponent = withAuthRedirect(ProfileContainer);

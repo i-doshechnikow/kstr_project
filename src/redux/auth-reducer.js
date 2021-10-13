@@ -63,7 +63,7 @@ export const logoutFromAcc = () => (dispatch) => {
 };
 
 export const getAuth = () => (dispatch) => {
-  userApi.getIsAuth().then((ans) => {
+  return userApi.getIsAuth().then((ans) => {
     if (ans.resultCode === 0) {
       let { id, email, login } = ans.data;
       dispatch(setUserData(id, email, login, true));

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import {
   maxLengthCreator,
@@ -10,7 +10,38 @@ import Post from "./Post/Post";
 
 const maxLength10 = maxLengthCreator(10);
 
-const MyPosts = (props) => {
+// class MyPosts extends React.Component { //may be PureComponent
+//   shouldComponentUpdate(nextProps, nextState) {
+//     return nextProps != this.props || nextState != this.state;
+//   }
+
+//   render() {
+//     console.log("render");
+//     let posts = this.props.postsData.map((el) => {
+//       return <Post message={el.post} likeCounter={el.likes} key={el.id} />;
+//     });
+
+//     let onClickAddPost = (formData) => {
+//       this.props.addPost(formData.newPost);
+//       formData.newPost = "";
+//     };
+
+//     return (
+//       <div className={s.content}>
+//         <div>
+//           my post
+//           <div>
+//             {/* <NewPostTest add={props.addPost} /> */}
+//             <PostReduxForm onSubmit={onClickAddPost} />
+//           </div>
+//         </div>
+//         <div className={s.posts}>{posts}</div>
+//       </div>
+//     );
+//   }
+// }
+
+const MyPosts = React.memo((props) => {
   let posts = props.postsData.map((el) => {
     return <Post message={el.post} likeCounter={el.likes} key={el.id} />;
   });
@@ -32,7 +63,7 @@ const MyPosts = (props) => {
       <div className={s.posts}>{posts}</div>
     </div>
   );
-};
+});
 
 const newAddPostForm = (props) => {
   return (

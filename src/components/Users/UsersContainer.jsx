@@ -80,8 +80,8 @@ export default compose(
     getUsers,
     getFollow,
     onUnFollow,
-  })
-  // withAuthRedirect
+  }),
+  withAuthRedirect
 )(UsersContainer);
 
 // let AuthRedirectComponent = withAuthRedirect(UsersContainer);

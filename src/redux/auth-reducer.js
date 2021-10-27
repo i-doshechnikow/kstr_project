@@ -62,13 +62,20 @@ export const logoutFromAcc = () => (dispatch) => {
   });
 };
 
-export const getAuth = () => (dispatch) => {
-  return userApi.getIsAuth().then((ans) => {
-    if (ans.resultCode === 0) {
-      let { id, email, login } = ans.data;
-      dispatch(setUserData(id, email, login, true));
-    }
-  });
+export const getAuth = () => async (dispatch) => {
+  let ans = await userApi.getIsAuth();
+  if (ans.resultCode === 0) {
+    let { id, email, login } = ans.data;
+    dispatch(setUserData(id, email, login, true));
+  }
 };
+// export const getAuth = () => (dispatch) => {
+//   return userApi.getIsAuth().then((ans) => {
+//     if (ans.resultCode === 0) {
+//       let { id, email, login } = ans.data;
+//       dispatch(setUserData(id, email, login, true));
+//     }
+//   });
+// };
 
 export default authReducer;

@@ -10,23 +10,25 @@ import {
 import MessageNewTest from "./Message/MessageForm";
 
 const Dialogs = (props) => {
-  let dialogsMap = props.data.dialogsData.map((el) => {
+  const { data, onMsgAreaChange, addMsg, newAdd } = props;
+
+  let dialogsMap = data.dialogsData.map((el) => {
     return <DialogItem name={el.name} id={el.id} key={el.id} />;
   });
 
-  let msgsMap = props.data.msgsData.map((el) => {
+  let msgsMap = data.msgsData.map((el) => {
     return <Message msg={el.msg} key={el.id} />;
   });
 
-  let onMsgAreaChange = (e) => {
+  let onMsgAreaChanges = (e) => {
     // console.log(props);
     let text = e.target.value;
-    props.onMsgAreaChange(text);
+    onMsgAreaChange(text);
   };
 
-  let addMsg = () => {
+  let addMsgs = () => {
     // props.dispatch(addMsgActionCreator());
-    props.addMsg();
+    addMsg();
   };
 
   return (
@@ -40,7 +42,7 @@ const Dialogs = (props) => {
       <div className={s.messages}>
         {msgsMap}
         <div>
-          <MessageNewTest addNewMessage={props.newAdd} />
+          <MessageNewTest addNewMessage={newAdd} />
         </div>
 
         {/* <textarea

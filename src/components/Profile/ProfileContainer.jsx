@@ -8,6 +8,7 @@ import {
   getProfile,
   getUserStatus,
   updateUserStatus,
+  savePhoto,
 } from "../../redux/profile-reducer";
 import MyPosts from "./myPosts/myPosts";
 import MyPostsContainer from "./myPosts/myPostsContainer";
@@ -16,8 +17,7 @@ import s from "./Profile.module.css";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
 class ProfileContainer extends React.Component {
-  componentDidMount() {
-    // this.props.getProfile(this.props.authorizedUserId);
+  refreshProfileData() {
     let userId = this.props.match.params.userId;
     if (!userId) {
       userId = this.props.authorizedUserId;
@@ -26,10 +26,18 @@ class ProfileContainer extends React.Component {
       }
     }
 
-    // this.props.getProfile(this.props.match.params.userId);
-    // this.props.getUserStatus(this.props.match.params.userId);
     this.props.getProfile(userId);
     this.props.getUserStatus(userId);
+  }
+
+  componentDidMount() {
+    this.refreshProfileData();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params.userId !== prevProps.match.params.userId) {
+      this.refreshProfileData();
+    }
   }
 
   render() {
@@ -37,9 +45,11 @@ class ProfileContainer extends React.Component {
       <div>
         <Profile
           {...this.props}
+          isOwner={!this.props.match.params.userId}
           userProfileId={this.props.userProfileId}
           status={this.props.status}
           updateStatus={this.props.updateUserStatus}
+          savePhoto={this.props.savePhoto}
         />
       </div>
     );
@@ -65,6 +75,7 @@ export default compose(
     getProfile,
     getUserStatus,
     updateUserStatus,
+    savePhoto,
   }),
   withRouter
   // withAuthRedirect

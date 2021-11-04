@@ -106,4 +106,15 @@ export const savePhoto = (photo) => async (dispatch) => {
   }
 };
 
+export const saveAbout = (info) => async (dispatch, getState) => {
+  const id = 19492;
+  let response = await profileApi.updateAbout(info);
+  if (response.data.resultCode === 0) {
+    // add setAbout
+    dispatch(getProfile(id));
+  } else {
+    console.log("response :>> ", response);
+  }
+};
+
 export default profileReducer;

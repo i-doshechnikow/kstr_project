@@ -62,6 +62,18 @@ export const profileApi = {
       },
     });
   },
+
+  updateAbout(info) {
+    return instance.put(`profile`, {
+      aboutMe: 'about you?',
+      lookingForAJob: info.lfaj,
+      lookingForAJobDescription: info.skills,
+      fullName: info.fullName,
+      contacts: {
+        github: info.github,
+      },
+    });
+  },
 };
 
 export const testAuthApi = {

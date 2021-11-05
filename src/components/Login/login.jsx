@@ -33,6 +33,19 @@ const LoginForm = (props) => {
         />
         <label>Password</label>
       </div>
+      {props.captcha && (
+        <div className={s.formControll}>
+          <img className={s.captcha} src={props.captcha} />
+          <Field
+            type="captcha"
+            name={"captcha"}
+            required
+            component={Input}
+            validate={[requiredField, maxLenth30]}
+          />
+          <label>captcha</label>
+        </div>
+      )}
       {props.error && <div className={s.formSummaryError}>{props.error}</div>}
       <button className={s.btn}>Login</button>
       <Field type="checkbox" name={"rememberMe"} component={"input"} /> Remember
@@ -56,7 +69,7 @@ const Login = (props) => {
     <div className={s.main}>
       <div className={s.container}>
         <h1>Please Login</h1>
-        <LoginReduxForm onSubmit={onSubmit} />
+        <LoginReduxForm onSubmit={onSubmit} captcha={props.captcha} />
       </div>
     </div>
   );

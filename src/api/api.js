@@ -65,7 +65,7 @@ export const profileApi = {
 
   updateAbout(info) {
     return instance.put(`profile`, {
-      aboutMe: 'about you?',
+      aboutMe: "about you?",
       lookingForAJob: info.lfaj,
       lookingForAJobDescription: info.skills,
       fullName: info.fullName,
@@ -76,13 +76,20 @@ export const profileApi = {
   },
 };
 
+export const securityAPI = {
+  getCaptcha() {
+    return instance.get(`/security/get-captcha-url`);
+  },
+};
+
 export const testAuthApi = {
-  authTest(login, password, rememberMe) {
+  authTest(login, password, rememberMe, captcha) {
     return instance
       .post(`auth/login`, {
         email: login,
         password: password,
         rememberMe: rememberMe,
+        captcha: captcha,
       })
       .then((res) => res.data);
   },

@@ -13,13 +13,14 @@ class LoginContainer extends React.Component {
     return this.props.isAuth ? (
       <ProfileContainer />
     ) : (
-      <Login authorized={this.props.authorized} />
+      <Login authorized={this.props.authorized} captcha={this.props.captcha} />
     );
   }
 }
 
 let mapDispatchToProps = (state) => ({
   isAuth: state.auth.isAuth,
+  captcha: state.auth.captcha,
 });
 
 export default connect(mapDispatchToProps, { authorized })(LoginContainer);

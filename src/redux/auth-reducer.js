@@ -1,14 +1,16 @@
 import { stopSubmit } from "redux-form";
-import { userApi, testAuthApi } from "../api/api";
+import { userApi, testAuthApi, securityAPI } from "../api/api";
 
 const SET_USER_DATA = "SET_USER_DATA";
 const SET_AUTH = "SET_AUTH";
+const GET_CAPTCHA_URL = "GET_CAPTCHA_URL";
 
 let initialState = {
   userId: null,
   email: null,
   login: null,
   isAuth: false,
+  captcha: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -24,6 +26,11 @@ const authReducer = (state = initialState, action) => {
         ...state,
         isAuth: action.isAuth,
       };
+    case GET_CAPTCHA_URL:
+      return {
+        ...state,
+        captcha: action.payload,
+      };
     default:
       return state;
   }
@@ -34,6 +41,11 @@ export const setAuth = (answer) => ({
   isAuth: answer,
 });
 
+export const setCaptcha = (url) => ({
+  type: GET_CAPTCHA_URL,
+  payload: url,
+});
+
 export const setUserData = (userId, email, login, isAuth) => ({
   type: SET_USER_DATA,
   userData: { userId, email, login },
@@ -42,15 +54,25 @@ export const setUserData = (userId, email, login, isAuth) => ({
 
 export const authorized = (formData) => (dispatch) => {
   testAuthApi
-    .authTest(formData.login, formData.password, formData.rememberMe)
+    .authTest(formData.login, formData.password, formData.rememberMe, formData.captcha)
     .then((ans) => {
-      if (ans.resultCode !== 1) {
+      if (ans.resultCode === 0) {
         dispatch(setAuth(true));
+      } else if (ans.messages[0] === "Incorrect anti-bot symbols") {
+        let message = ans.messages.length > 0 ? ans.messages[0] : "Some error";
+        dispatch(stopSubmit("login", { _error: message }));
+        dispatch(getCaptcha());
       } else {
         let message = ans.messages.length > 0 ? ans.messages[0] : "Some error";
         dispatch(stopSubmit("login", { _error: message }));
       }
     });
+};
+
+export const getCaptcha = () => async (dispatch) => {
+  let response = await securityAPI.getCaptcha();
+  const captcha = response.data.url;
+  dispatch(setCaptcha(captcha));
 };
 
 export const logoutFromAcc = () => (dispatch) => {

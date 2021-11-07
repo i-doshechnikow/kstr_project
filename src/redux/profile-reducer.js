@@ -91,12 +91,15 @@ export const getUserStatus = (id) => (dispatch) => {
   });
 };
 
-export const updateUserStatus = (statusString) => (dispatch) => {
-  profileApi.updateStatus(statusString).then((ans) => {
-    if (ans.data.resultCode === 0) {
+export const updateUserStatus = (statusString) => async (dispatch) => {
+  try {
+    let response = await profileApi.updateStatus(statusString);
+    if (response.data.resultCode === 0) {
       dispatch(setStatus(statusString));
     }
-  });
+  } catch (error) {
+    console.log("error :>> ", error);
+  }
 };
 
 export const savePhoto = (photo) => async (dispatch) => {

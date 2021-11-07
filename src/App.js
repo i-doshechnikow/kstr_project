@@ -17,8 +17,17 @@ import { compose } from "redux";
 import Preloader from "./components/common/Preloader/Preloader";
 
 class Apps extends React.Component {
+  catchAllError = (promiseRejectionEvent) => {
+    console.log(promiseRejectionEvent);
+  };
+
   componentDidMount() {
     this.props.initializeApp();
+    window.addEventListener("unhandledrejection", this.catchAllError);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("unhandledrejection", this.catchAllError);
   }
 
   render() {
@@ -47,4 +56,7 @@ const mapStateToProps = (state) => ({
   initialized: state.app.initialized,
 });
 
-export default compose(withRouter, connect(mapStateToProps, { initializeApp }))(Apps);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { initializeApp })
+)(Apps);

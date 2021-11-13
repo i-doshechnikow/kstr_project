@@ -93,7 +93,6 @@ export const getUsers = (currentPage, pageSize) => {
 const followUnfollowFlow = async (id, dispatch, apiMethod, actionCreator) => {
   dispatch(setToggelFollowingProgress(true, id));
   let response = await apiMethod(id);
-  console.log(response);
   if (response.data.result === 0) {
     dispatch(actionCreator(id));
   }
@@ -101,13 +100,13 @@ const followUnfollowFlow = async (id, dispatch, apiMethod, actionCreator) => {
   dispatch(setToggelFollowingProgress(false, id));
 };
 
-export const getFollow = (id) => (dispatch) => {
+export const oldGetFollow = (id) => (dispatch) => {
   let apiMethod = userApi.onFollowClick;
   let actionCreator = follow;
   followUnfollowFlow(id, dispatch, apiMethod, actionCreator);
 };
 
-export const oldGetFollow = (id) => {
+export const getFollow = (id) => {
   return (dispatch) => {
     dispatch(setToggelFollowingProgress(true, id));
     userApi.onFollowClick(id).then((answer) => {

@@ -5,7 +5,15 @@ const SET_USER_DATA = "SET_USER_DATA";
 const SET_AUTH = "SET_AUTH";
 const GET_CAPTCHA_URL = "GET_CAPTCHA_URL";
 
-let initialState = {
+export type InitialStateType = {
+  userId: number | null;
+  email: string | null;
+  login: string | null;
+  isAuth: boolean;
+  captcha: string | null;
+};
+
+let initialState: InitialStateType = {
   userId: null,
   email: null,
   login: null,
@@ -13,7 +21,7 @@ let initialState = {
   captcha: null,
 };
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action: any): InitialStateType => {
   switch (action.type) {
     case SET_USER_DATA:
       return {
@@ -36,25 +44,64 @@ const authReducer = (state = initialState, action) => {
   }
 };
 
-export const setAuth = (answer) => ({
+type SetAuthType = {
+  type: typeof SET_AUTH;
+  isAuth: boolean;
+};
+
+export const setAuth = (answer: boolean): SetAuthType => ({
   type: SET_AUTH,
   isAuth: answer,
 });
 
-export const setCaptcha = (url) => ({
+type SetCaptchaType = {
+  type: typeof GET_CAPTCHA_URL;
+  payload: string;
+};
+
+export const setCaptcha = (url: string): SetCaptchaType => ({
   type: GET_CAPTCHA_URL,
   payload: url,
 });
 
-export const setUserData = (userId, email, login, isAuth) => ({
+type SetUserDataTypePayloadType = {
+  userId: number | null;
+  email: string | null;
+  login: string | null;
+};
+
+type SetUserDataType = {
+  type: typeof SET_USER_DATA;
+  userData: SetUserDataTypePayloadType;
+  isAuth: boolean;
+};
+
+export const setUserData = (
+  userId: number | null,
+  email: string | null,
+  login: string | null,
+  isAuth: boolean
+): SetUserDataType => ({
   type: SET_USER_DATA,
   userData: { userId, email, login },
   isAuth: isAuth,
 });
 
-export const authorized = (formData) => (dispatch) => {
+type FormDataType = {
+  login: string;
+  password: string;
+  rememberMe: boolean;
+  captcha: string;
+};
+
+export const authorized = (formData: FormDataType) => (dispatch: any) => {
   testAuthApi
-    .authTest(formData.login, formData.password, formData.rememberMe, formData.captcha)
+    .authTest(
+      formData.login,
+      formData.password,
+      formData.rememberMe,
+      formData.captcha
+    )
     .then((ans) => {
       if (ans.resultCode === 0) {
         dispatch(setAuth(true));
@@ -69,13 +116,13 @@ export const authorized = (formData) => (dispatch) => {
     });
 };
 
-export const getCaptcha = () => async (dispatch) => {
+export const getCaptcha = () => async (dispatch: any) => {
   let response = await securityAPI.getCaptcha();
   const captcha = response.data.url;
   dispatch(setCaptcha(captcha));
 };
 
-export const logoutFromAcc = () => (dispatch) => {
+export const logoutFromAcc = () => (dispatch: any) => {
   testAuthApi.logout().then((ans) => {
     if (ans.resultCode === 0) {
       dispatch(setAuth(false));
@@ -84,20 +131,12 @@ export const logoutFromAcc = () => (dispatch) => {
   });
 };
 
-export const getAuth = () => async (dispatch) => {
+export const getAuth = () => async (dispatch: any) => {
   let ans = await userApi.getIsAuth();
   if (ans.resultCode === 0) {
     let { id, email, login } = ans.data;
     dispatch(setUserData(id, email, login, true));
   }
 };
-// export const getAuth = () => (dispatch) => {
-//   return userApi.getIsAuth().then((ans) => {
-//     if (ans.resultCode === 0) {
-//       let { id, email, login } = ans.data;
-//       dispatch(setUserData(id, email, login, true));
-//     }
-//   });
-// };
 
 export default authReducer;

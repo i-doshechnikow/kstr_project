@@ -8,7 +8,16 @@ const SET_TOTAL_COUNT = "SET_TOTAL_COUNT";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
 const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE_IS_FOLLOWING_PROGRESS";
 
-let initialState = {
+export type InitialStateType = {
+  users: Array<any>;
+  pageSize: number;
+  totalUsersCount: number;
+  currentPage: number;
+  isFetching: boolean;
+  followingInProgress: Array<any>;
+};
+
+let initialState: InitialStateType = {
   users: [],
   pageSize: 5,
   totalUsersCount: 0,
@@ -17,7 +26,7 @@ let initialState = {
   followingInProgress: [],
 };
 
-const usersReducer = (state = initialState, action) => {
+const usersReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case TOGGLE_IS_FOLLOWING_PROGRESS:
       return {
@@ -59,23 +68,83 @@ const usersReducer = (state = initialState, action) => {
   }
 };
 
-export const follow = (userId) => ({ type: FOLLOW, userId });
-export const unfollow = (userId) => ({ type: UNFOLLOW, userId });
-export const setUsers = (users) => ({ type: SET_USERS, users });
-export const setCurrentPage = (page) => ({ type: SET_CURRENT_PAGE, page });
-export const setTotalUsers = (total) => ({ type: SET_TOTAL_COUNT, total });
-export const setToggelFetching = (isFetch) => ({
+type FollowType = {
+  type: typeof FOLLOW;
+  userId: number;
+};
+
+export const follow = (userId: number): FollowType => ({
+  type: FOLLOW,
+  userId,
+});
+
+type UnfollowType = {
+  type: typeof UNFOLLOW;
+  userId: number;
+};
+
+export const unfollow = (userId: number): UnfollowType => ({
+  type: UNFOLLOW,
+  userId,
+});
+
+type SetUsersType = {
+  type: typeof SET_USERS;
+  users: Array<any>;
+};
+
+export const setUsers = (users: Array<any>): SetUsersType => ({
+  type: SET_USERS,
+  users,
+});
+
+type SetCurrentPageType = {
+  type: typeof SET_CURRENT_PAGE;
+  page: number;
+};
+
+export const setCurrentPage = (page: number): SetCurrentPageType => ({
+  type: SET_CURRENT_PAGE,
+  page,
+});
+
+type SetTotalUsersType = {
+  type: typeof SET_TOTAL_COUNT;
+  total: number;
+};
+
+export const setTotalUsers = (total: number): SetTotalUsersType => ({
+  type: SET_TOTAL_COUNT,
+  total,
+});
+
+type SetToggelFetchingType = {
+  type: typeof TOGGLE_IS_FETCHING;
+  isFetch: boolean;
+};
+
+export const setToggelFetching = (isFetch: boolean): SetToggelFetchingType => ({
   type: TOGGLE_IS_FETCHING,
   isFetch,
 });
-export const setToggelFollowingProgress = (isFolowing, userId) => ({
+
+type SetToggelFollowingProgressType = {
+  type: typeof TOGGLE_IS_FOLLOWING_PROGRESS;
+  isFolowing: boolean;
+  userId: number;
+};
+
+export const setToggelFollowingProgress = (
+  isFolowing: boolean,
+  userId: number
+): SetToggelFollowingProgressType => ({
   type: TOGGLE_IS_FOLLOWING_PROGRESS,
   isFolowing,
   userId,
 });
 
-export const getUsers = (currentPage, pageSize) => {
-  return (dispatch) => {
+export const getUsers = (currentPage: number, pageSize: number) => {
+  return (dispatch: any) => {
     dispatch(setCurrentPage(currentPage));
     dispatch(setToggelFetching(true));
     userApi.getUsers(currentPage, pageSize).then((ans) => {
@@ -90,7 +159,12 @@ export const getUsers = (currentPage, pageSize) => {
   };
 };
 
-const followUnfollowFlow = async (id, dispatch, apiMethod, actionCreator) => {
+const followUnfollowFlow = async (
+  id: number,
+  dispatch: any,
+  apiMethod: Function,
+  actionCreator: Function
+) => {
   dispatch(setToggelFollowingProgress(true, id));
   let response = await apiMethod(id);
   if (response.data.result === 0) {
@@ -100,14 +174,14 @@ const followUnfollowFlow = async (id, dispatch, apiMethod, actionCreator) => {
   dispatch(setToggelFollowingProgress(false, id));
 };
 
-export const oldGetFollow = (id) => (dispatch) => {
+export const oldGetFollow = (id: number) => (dispatch: any) => {
   let apiMethod = userApi.onFollowClick;
   let actionCreator = follow;
   followUnfollowFlow(id, dispatch, apiMethod, actionCreator);
 };
 
-export const getFollow = (id) => {
-  return (dispatch) => {
+export const getFollow = (id: number) => {
+  return (dispatch: any) => {
     dispatch(setToggelFollowingProgress(true, id));
     userApi.onFollowClick(id).then((answer) => {
       if (answer.messages[0] !== "You can't follow yourself") {
@@ -118,7 +192,7 @@ export const getFollow = (id) => {
   };
 };
 
-export const onUnFollow = (id) => (dispatch) => {
+export const onUnFollow = (id: number) => (dispatch: any) => {
   dispatch(setToggelFollowingProgress(true, id));
   userApi.onUnfollowClick(id).then((ans) => {
     if (ans.resultCode == 0) dispatch(unfollow(id));

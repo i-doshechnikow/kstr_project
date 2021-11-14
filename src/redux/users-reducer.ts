@@ -26,7 +26,7 @@ let initialState: InitialStateType = {
   followingInProgress: [],
 };
 
-const usersReducer = (state = initialState, action: any) => {
+const usersReducer = (state = initialState, action: any): InitialStateType => {
   switch (action.type) {
     case TOGGLE_IS_FOLLOWING_PROGRESS:
       return {

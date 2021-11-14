@@ -47,7 +47,10 @@ let initialState: InitialStateType = {
   status: "",
 };
 
-const profileReducer = (state = initialState, action: any) => {
+const profileReducer = (
+  state = initialState,
+  action: any
+): InitialStateType => {
   switch (action.type) {
     case SET_STATUS:
       return { ...state, status: action.status };

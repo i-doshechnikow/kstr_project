@@ -18,26 +18,37 @@ import {
   getIsFetching,
   getPageFromState,
   getUserCount,
-  getUsersFromState,
   getUsersS,
-  getUsersSuperSelector,
-  getUserSuper,
 } from "../../redux/users-selectors";
 
-class UsersContainer extends React.Component {
+type PropsType = {
+  getUsers: (currentPage: number, pageSize: number) => {};
+  currentPage: number;
+  pageSize: number;
+  getFollow: (userId: number) => {};
+  onUnFollow: (userId: number) => {};
+  isFetching: boolean;
+  totalUsersCount: number;
+  users: Array<any>;
+  onPageChanged: (parameter: number) => {};
+  followingInProgress: Array<number>;
+  onFollow: (parameter: number) => {};
+};
+
+class UsersContainer extends React.Component<PropsType> {
   componentDidMount() {
     this.props.getUsers(this.props.currentPage, this.props.pageSize);
   }
 
-  onPageChanged = (pageNumber) => {
+  onPageChanged = (pageNumber: number) => {
     this.props.getUsers(pageNumber, this.props.pageSize);
   };
 
-  onFollow = (userId) => {
+  onFollow = (userId: number) => {
     this.props.getFollow(userId);
   };
 
-  onUnFollow = (userId) => {
+  onUnFollow = (userId: number) => {
     this.props.onUnFollow(userId);
   };
 
@@ -60,7 +71,9 @@ class UsersContainer extends React.Component {
   }
 }
 
-let mapStateToProps = (state) => {
+
+
+let mapStateToProps = (state: any) => {
   return {
     // users: getUsersFromState(state),
     users: getUsersS(state),

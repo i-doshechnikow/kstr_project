@@ -3,7 +3,18 @@ import styles from "./Users.module.css";
 import face from "../../assets/images/face.png";
 import { NavLink } from "react-router-dom";
 
-let Users = (props) => {
+type PropsType = {
+  totalUsersCount: number;
+  pageSize: number;
+  currentPage: number;
+  onPageChanged: (parameter: number) => {};
+  users: Array<any>;
+  followingInProgress: Array<number>;
+  onUnFollow: (parameter: number) => {};
+  onFollow: (parameter: number) => {};
+};
+
+let Users: React.FC<PropsType> = (props) => {
   let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
   let pages = [];
   for (let i = 1; i <= pagesCount; i++) {
@@ -14,6 +25,7 @@ let Users = (props) => {
     <div>
       {pages.map((el) => (
         <button
+          key={el}
           className={
             (props.currentPage == el && styles.buttonNow) || styles.button
           }

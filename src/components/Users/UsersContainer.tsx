@@ -20,6 +20,7 @@ import {
   getUserCount,
   getUsersS,
 } from "../../redux/users-selectors";
+import { AppStateType } from "../../redux/redux-store";
 
 type PropsType = {
   getUsers: (currentPage: number, pageSize: number) => {};
@@ -33,6 +34,7 @@ type PropsType = {
   onPageChanged: (parameter: number) => {};
   followingInProgress: Array<number>;
   onFollow: (parameter: number) => {};
+  pageTitle: string;
 };
 
 class UsersContainer extends React.Component<PropsType> {
@@ -65,15 +67,14 @@ class UsersContainer extends React.Component<PropsType> {
           onFollow={this.onFollow}
           onUnFollow={this.onUnFollow}
           followingInProgress={this.props.followingInProgress}
-        />
+          />
+          <h4>{this.props.pageTitle}</h4>
       </>
     );
   }
 }
 
-
-
-let mapStateToProps = (state: any) => {
+let mapStateToProps = (state: AppStateType) => {
   return {
     // users: getUsersFromState(state),
     users: getUsersS(state),

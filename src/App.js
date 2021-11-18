@@ -43,7 +43,7 @@ class Apps extends React.Component {
           <Route exact path="/" render={() => <ProfileContainer />} />
           <Route path="/dialogs" render={() => <DialogsContainer />} />
           <Route path="/profile/:userId?" render={() => <ProfileContainer />} />
-          <Route path="/users" render={() => <UsersContainer />} />
+          <Route path="/users" render={() => <UsersContainer pageTitle={"Users"}/>} />
           <Route path="/login" render={() => <LoginContainer />} />
           <Route path="/test" render={() => <SignupForm />} />
         </div>

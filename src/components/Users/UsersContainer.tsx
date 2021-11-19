@@ -22,20 +22,31 @@ import {
 } from "../../redux/users-selectors";
 import { AppStateType } from "../../redux/redux-store";
 
-type PropsType = {
-  getUsers: (currentPage: number, pageSize: number) => {};
+type MapStatePropsType = {
   currentPage: number;
   pageSize: number;
-  getFollow: (userId: number) => {};
-  onUnFollow: (userId: number) => {};
   isFetching: boolean;
   totalUsersCount: number;
   users: Array<any>;
-  onPageChanged: (parameter: number) => {};
   followingInProgress: Array<number>;
-  onFollow: (parameter: number) => {};
+};
+
+type MapDispatchPropType = {
+  getUsers: (currentPage: number, pageSize: number) => {};
+  getFollow: (userId: number) => {};
+  onUnFollow: (userId: number) => {};
+  // onPageChanged: (parameter: number) => {};
+  // onFollow: (parameter: number) => {};
+  // follow: () => {};
+  // unfollow: () => {};
+  // setToggelFollowingProgress: () => {};
+};
+
+type ownPropsType = {
   pageTitle: string;
 };
+
+type PropsType = MapStatePropsType & MapDispatchPropType & ownPropsType;
 
 class UsersContainer extends React.Component<PropsType> {
   componentDidMount() {
@@ -67,14 +78,14 @@ class UsersContainer extends React.Component<PropsType> {
           onFollow={this.onFollow}
           onUnFollow={this.onUnFollow}
           followingInProgress={this.props.followingInProgress}
-          />
-          <h4>{this.props.pageTitle}</h4>
+        />
+        <h4>{this.props.pageTitle}</h4>
       </>
     );
   }
 }
 
-let mapStateToProps = (state: AppStateType) => {
+let mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
     // users: getUsersFromState(state),
     users: getUsersS(state),
@@ -87,14 +98,14 @@ let mapStateToProps = (state: AppStateType) => {
 };
 
 export default compose(
-  connect(mapStateToProps, {
-    follow,
-    unfollow,
-    setToggelFollowingProgress,
-    getUsers,
-    getFollow,
-    onUnFollow,
-  }),
+  connect<MapStatePropsType, MapDispatchPropType, ownPropsType, AppStateType>(
+    mapStateToProps,
+    {
+      getUsers,
+      getFollow,
+      onUnFollow,
+    }
+  ),
   withAuthRedirect
 )(UsersContainer);
 

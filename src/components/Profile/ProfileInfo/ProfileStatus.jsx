@@ -2,6 +2,7 @@ import React from "react";
 import s from "./ProfileInfo.module.css";
 
 class ProfileStatus extends React.Component {
+  // test git add
   state = {
     editMode: false,
     status: this.props.status,

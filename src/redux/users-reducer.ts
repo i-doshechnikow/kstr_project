@@ -1,4 +1,7 @@
+import { AppStateType } from "./redux-store";
 import { userApi } from "../api/api";
+import { Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -26,7 +29,19 @@ let initialState: InitialStateType = {
   followingInProgress: [],
 };
 
-const usersReducer = (state = initialState, action: any): InitialStateType => {
+type ActionTypes =
+  | FollowType
+  | UnfollowType
+  | SetUsersType
+  | SetCurrentPageType
+  | SetTotalUsersType
+  | SetToggelFetchingType
+  | SetToggelFollowingProgressType;
+
+const usersReducer = (
+  state = initialState,
+  action: ActionTypes
+): InitialStateType => {
   switch (action.type) {
     case TOGGLE_IS_FOLLOWING_PROGRESS:
       return {
@@ -143,8 +158,14 @@ export const setToggelFollowingProgress = (
   userId,
 });
 
-export const getUsers = (currentPage: number, pageSize: number) => {
-  return (dispatch: any) => {
+type GetStateType = () => AppStateType;
+type DispatchType = Dispatch<ActionTypes>;
+type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>;
+
+export const getUsers = (currentPage: number, pageSize: number): ThunkType => {
+  // return (dispatch: DispatchType, getState: GetStateType) => {
+  return (dispatch, getState) => {
+    let a = getState().profilePage;
     dispatch(setCurrentPage(currentPage));
     dispatch(setToggelFetching(true));
     userApi.getUsers(currentPage, pageSize).then((ans) => {
@@ -180,7 +201,7 @@ export const oldGetFollow = (id: number) => (dispatch: any) => {
   followUnfollowFlow(id, dispatch, apiMethod, actionCreator);
 };
 
-export const getFollow = (id: number) => {
+export const getFollow = (id: number): ThunkType => {
   return (dispatch: any) => {
     dispatch(setToggelFollowingProgress(true, id));
     userApi.onFollowClick(id).then((answer) => {
@@ -192,12 +213,14 @@ export const getFollow = (id: number) => {
   };
 };
 
-export const onUnFollow = (id: number) => (dispatch: any) => {
-  dispatch(setToggelFollowingProgress(true, id));
-  userApi.onUnfollowClick(id).then((ans) => {
-    if (ans.resultCode == 0) dispatch(unfollow(id));
-    dispatch(setToggelFollowingProgress(false, id));
-  });
-};
+export const onUnFollow =
+  (id: number): ThunkType =>
+  (dispatch: any) => {
+    dispatch(setToggelFollowingProgress(true, id));
+    userApi.onUnfollowClick(id).then((ans) => {
+      if (ans.resultCode == 0) dispatch(unfollow(id));
+      dispatch(setToggelFollowingProgress(false, id));
+    });
+  };
 
 export default usersReducer;

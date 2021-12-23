@@ -21,16 +21,16 @@ export const userApi = {
         return response.data;
       });
   },
-  getUserInfo(id) {
+  getUserInfo(id: number) {
     console.warn("Obsolete method. Use profileApi object");
     return profileApi.getUserInfo(id);
   },
-  onFollowClick(id) {
+  onFollowClick(id: number) {
     return instance.post(`follow/${id}`).then((response) => {
       return response.data;
     });
   },
-  onUnfollowClick(id) {
+  onUnfollowClick(id: number) {
     return instance.delete(`follow/${id}`).then((response) => {
       return response.data;
     });
@@ -38,22 +38,22 @@ export const userApi = {
 };
 
 export const profileApi = {
-  getUserInfo(id) {
+  getUserInfo(id: number) {
     return instance.get(`profile/${id}`).then((response) => {
       return response.data;
     });
   },
-  getStatus(id) {
+  getStatus(id: number) {
     return instance
       .get(`profile/status/${id}`)
       .then((response) => response.data);
   },
-  updateStatus(string) {
+  updateStatus(string: string) {
     return instance.put(`profile/status`, {
       status: string,
     });
   },
-  updateProfilePhoto(photo) {
+  updateProfilePhoto(photo: string) {
     const formData = new FormData();
     formData.append("image", photo);
     return instance.put(`profile/photo`, formData, {
@@ -63,7 +63,7 @@ export const profileApi = {
     });
   },
 
-  updateAbout(info) {
+  updateAbout(info: any) {
     return instance.put(`profile`, {
       aboutMe: "about you?",
       lookingForAJob: info.lfaj,
@@ -83,7 +83,7 @@ export const securityAPI = {
 };
 
 export const testAuthApi = {
-  authTest(login, password, rememberMe, captcha) {
+  authTest(login: string, password: string, rememberMe: boolean, captcha: null | string) {
     return instance
       .post(`auth/login`, {
         email: login,

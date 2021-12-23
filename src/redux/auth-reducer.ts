@@ -1,5 +1,5 @@
 import { stopSubmit } from "redux-form";
-import { userApi, testAuthApi, securityAPI } from "../api/api";
+import { userApi, testAuthApi, securityAPI, ResultCodesEnum } from "../api/api";
 
 const SET_USER_DATA = "SET_USER_DATA";
 const SET_AUTH = "SET_AUTH";
@@ -103,7 +103,7 @@ export const authorized = (formData: FormDataType) => (dispatch: any) => {
       formData.captcha
     )
     .then((ans) => {
-      if (ans.resultCode === 0) {
+      if (ans.resultCode === ResultCodesEnum.Success) {
         dispatch(setAuth(true));
       } else if (ans.messages[0] === "Incorrect anti-bot symbols") {
         let message = ans.messages.length > 0 ? ans.messages[0] : "Some error";
@@ -124,7 +124,7 @@ export const getCaptcha = () => async (dispatch: any) => {
 
 export const logoutFromAcc = () => (dispatch: any) => {
   testAuthApi.logout().then((ans) => {
-    if (ans.resultCode === 0) {
+    if (ans.resultCode === ResultCodesEnum.Success) {
       dispatch(setAuth(false));
       dispatch(setUserData(null, null, null, false));
     }
@@ -133,7 +133,7 @@ export const logoutFromAcc = () => (dispatch: any) => {
 
 export const getAuth = () => async (dispatch: any) => {
   let ans = await userApi.getIsAuth();
-  if (ans.resultCode === 0) {
+  if (ans.resultCode === ResultCodesEnum.Success) {
     let { id, email, login } = ans.data;
     dispatch(setUserData(id, email, login, true));
   }

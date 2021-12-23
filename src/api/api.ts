@@ -8,9 +8,29 @@ const instance = axios.create({
   },
 });
 
+export enum ResultCodesEnum {
+  Success = 0,
+  Error = 1,
+}
+export enum ResultCodesWithCaptchaEnum {
+  CuptchaIsRequired = 10,
+}
+
+type InnerData = {
+  id: number;
+  email: string;
+  login: string;
+};
+
+type GetIsAuthType = {
+  data: InnerData;
+  resultCode: ResultCodesEnum | ResultCodesWithCaptchaEnum;
+  messages: Array<string>;
+};
+
 export const userApi = {
   getIsAuth() {
-    return instance.get(`auth/me`).then((response) => {
+    return instance.get<GetIsAuthType>(`auth/me`).then((response) => {
       return response.data;
     });
   },
@@ -82,10 +102,21 @@ export const securityAPI = {
   },
 };
 
+type AuthLoginType = {
+  resultCode: ResultCodesWithCaptchaEnum | ResultCodesEnum;
+  data: { userId: number };
+  messages: Array<string>;
+};
+
 export const testAuthApi = {
-  authTest(login: string, password: string, rememberMe: boolean, captcha: null | string) {
+  authTest(
+    login: string,
+    password: string,
+    rememberMe: boolean,
+    captcha: null | string
+  ) {
     return instance
-      .post(`auth/login`, {
+      .post<AuthLoginType>(`auth/login`, {
         email: login,
         password: password,
         rememberMe: rememberMe,
